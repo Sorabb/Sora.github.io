@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{margin:0;padding:0;}
+	#little{width:320px;height:180px;border:3px solid #000;margin:100px 0 0 100px;position: relative;}
+	#little img{width:320px;height:180px;}
+	.square{width:90px;height:90px;background:yellow;opacity:0.3;position: absolute;top:0;left:0;display:none;}
+	#large{width:500px;height:500px;position: absolute;top:50px;left:600px;overflow: hidden;}
+	#large img{position: relative;top:0;right:0;}
+	</style>
+</head>
+<body>
+	<div id="little">
+		
+		<img src="magnifying.jpeg" alt=""><div class="square"></div>
+	</div>
+	<div id="large">
+		<img src="magnifying.jpeg" alt="">
+	</div>
+	<script>
+	var oLittle = document.getElementById("little");
+	var oImg = document.getElementsByTagName("img")[0];
+	var oSquare = oLittle.getElementsByTagName("div")[0];
+	var oLarge = document.getElementById("large");
+	var oImg2 = oLarge.getElementsByTagName("img")[0];
+	
+		
+	//oSquare.style.display = "block";
+	oLittle.onmouseenter = function(){
+		oSquare.style.display = "block";
+	}
+	oLittle.onmouseleave = function(){
+		oSquare.style.display = "none";
+	}
+	oLittle.onmousemove = function(ev){
+		var ev = ev || event;
+		var iX = ev.clientX;
+		var iY = ev.clientY;
+		var iT = oLittle.offsetTop;
+		var bT = (oLittle.offsetHeight - oLittle.clientHeight)/2;
+		var iL = oLittle.offsetLeft;
+		var bL = (oLittle.offsetWidth - oLittle.clientWidth)/2;
+		console.log(bL)
+		var oL = iX - iL - bL - oSquare.offsetWidth/2;
+		var oT = iY - iT - bT - oSquare.offsetHeight/2;
+		if(oL<0)oL=0;
+		if(oT<0)oT=0;
+		if(oL>bL+oLittle.clientWidth-oSquare.offsetWidth)oL=bL+oLittle.clientWidth-oSquare.offsetWidth;
+		if(oT>bT+oLittle.clientHeight-oSquare.offsetHeight)oT=bT+oLittle.clientHeight-oSquare.offsetHeight;
+		//if(oL)
+		oSquare.style.left = oL + "px";
+		oSquare.style.top = oT + "px";
+		var scaleX = oL/(oLittle.clientWidth-oSquare.offsetWidth);
+		var scaleY = oT/(oLittle.clientHeight-oSquare.offsetHeight);
+		oImg2.style.left = (oLarge.clientWidth-oImg2.offsetWidth) * scaleX + "px";
+		oImg2.style.top = (oLarge.clientHeight-oImg2.offsetHeight) * scaleY + "px";
+	}
+	
+	</script>
+</body>
+</html>

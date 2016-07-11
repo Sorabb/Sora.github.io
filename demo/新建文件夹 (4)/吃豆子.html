@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="1.css" id="cssLink">
+	
+	<script src=map.js></script>
+</head>
+<body>
+	<div id="box">
+		
+	</div>
+	<input type="button" id="btn" value="start">
+</body>
+</html>
+<script>
+	var oBox = document.getElementById("box");
+	var peaN = 0;
+	var disX = 0;
+	var disY = 0;
+	var dir = "l";
+	//var ocssLink = document.getElementById("cssLink");
+	var arradr = ["p","p2"];
+	var n = 0;
+	var divP = $getClass("p")[0];
+	var iW = arr[0].length;
+	var iH = arr.length;
+	var aDiv = oBox.getElementsByTagName("div");
+	var abtn = document.getElementsByTagName("input");
+
+	//生成地图
+	for(var i=0;i<arr.length;i++){
+		for(var j=0;j<arr[0].length;j++){
+			var oDiv = document.createElement("div");
+			if(arr[i][j]==1){
+				oDiv.className = "yes";
+				peaN++;
+			}
+			else if(arr[i][j]==4){
+				oDiv.className = "p";
+				disX = j;
+				disY = i;
+			}
+			else {
+				oDiv.className = "no";
+				
+			}
+			
+			oBox.appendChild(oDiv);
+		}
+	}
+	document.title = peaN;
+
+	//getElementsByClass的模拟
+	function $getClass(str){
+		var eles = document.getElementsByTagName("*");
+		var arr = [];
+		for(var i = 0;i<eles.length;i++){
+			if(eles[i].className==str){
+				arr.push(eles[i])
+			}
+		}
+		return arr;
+	}
+
+	//人移动
+	function go(){
+		arr[disY][disX] = 2;
+		n = n==1? 0 : 1
+		if(dir == "l"&&arr[disY][disX-1]&&arr[disY][disX-1]!=0){
+			aDiv[disY*arr[0].length + disX].style.webkitTransform = "";
+			aDiv[disY*arr[0].length + disX].style.msTransform = "";
+			aDiv[disY*arr[0].length + disX].style.mozTransform = "";
+			aDiv[disY*arr[0].length + disX].className = "no";
+			disX--;
+			move(0)
+			
+
+		}
+		else if(dir == "r"&&arr[disY][disX+1]&&arr[disY][disX+1]!=0){
+			aDiv[disY*arr[0].length + disX].style.webkitTransform = "";
+			aDiv[disY*arr[0].length + disX].style.msTransform = "";
+			aDiv[disY*arr[0].length + disX].style.mozTransform = "";
+			aDiv[disY*arr[0].length + disX].className = "no";
+			disX++;
+			move(180)
+		}
+		else if(dir == "u"&&arr[disY-1]&&arr[disY-1][disX]!=0){
+			aDiv[disY*arr[0].length + disX].style.webkitTransform = "";
+			aDiv[disY*arr[0].length + disX].style.msTransform = "";
+			aDiv[disY*arr[0].length + disX].style.mozTransform = "";
+			aDiv[disY*arr[0].length + disX].className = "no";
+			disY--;
+			move(90)
+		}
+		else if(dir == "d"&&arr[disY+1]&&arr[disY+1][disX]!=0){
+			aDiv[disY*arr[0].length + disX].style.webkitTransform = "";
+			aDiv[disY*arr[0].length + disX].style.msTransform = "";
+			aDiv[disY*arr[0].length + disX].style.mozTransform = "";
+			aDiv[disY*arr[0].length + disX].className = "no";
+			disY++;
+			move(270)
+		}
+		if(arr[disY][disX]==1){
+			peaN--;
+			document.title = peaN;
+			
+		}
+		arr[disY][disX]=4;
+		if(peaN==0){
+			clearInterval(timer);
+			clearInterval(mtimer);
+			clearInterval(mtimer2);
+			clearInterval(mtimer3);
+			alert("win")
+		}
+		//console.log(arr)
+	}
+
+	//人移动的封装
+	function move(num){
+		if(hasClass(aDiv[disY*arr[0].length + disX],"monster")||hasClass(aDiv[disY*arr[0].length + disX],"monster2")||hasClass(aDiv[disY*arr[0].length + disX],"monster3")){
+				clearInterval(timer);
+				clearInterval(mtimer);
+				clearInterval(mtimer2);
+				clearInterval(mtimer3);
+				alert("die");
+
+		}
+		else{
+			aDiv[disY*arr[0].length + disX].className = arradr[n];
+			$getClass(arradr[n])[0].style.webkitTransform = "rotate("+num+"deg)";
+			$getClass(arradr[n])[0].style.msTransform = "rotate("+num+"deg)";
+			$getClass(arradr[n])[0].style.mozTransform = "rotate("+num+"deg)";
+		}
+	}
+
+	//键盘控制方向
+	document.onkeydown = function(ev){
+		var ev = ev || event;
+		if(ev.keyCode == 37&&arr[disY][disX-1]&&arr[disY][disX-1]!=0){
+			dir = "l";
+			
+		}
+		if(ev.keyCode == 38&&arr[disY-1]&&arr[disY-1][disX]!=0){
+			dir = "u";
+			
+		}
+		if(ev.keyCode == 39&&arr[disY][disX+1]&&arr[disY][disX+1]!=0){
+			dir = "r";
+			
+		}
+		if(ev.keyCode == 40&&arr[disY+1]&&arr[disY+1][disX]!=0){
+			dir = "d";
+			
+		}
+		
+		
+	}
+	//mon移动的操作class的方法
+	function addClass(obj,str){
+		obj.className += " "+str;
+
+	}
+	function hasClass(obj,str){
+		var aClass = obj.className.split(' ');
+
+		for(var i=0; i<aClass.length; i++){
+		
+			if( aClass[i] == str ){
+				return true;
+			}	
+			
+		}
+		return false;
+	}
+	function removeClass(obj,str){
+		var aClass = obj.className.split(' ');
+		
+		for(var i=0; i<aClass.length; i++){
+		
+			if( aClass[i] == str ){
+				aClass.splice(i,1);
+				obj.className = aClass.join(' ');
+			}	
+			
+		}
+
+	}
+
+	//第一只怪物生成
+	var mdir = "l";
+	var posY = 0;
+	var posX = 0;
+	var mtimer = null;
+	function monsterGo(posX,posY){
+		addClass(aDiv[posY*arr[0].length+posX],"monster");
+		
+		mtimer = setInterval(monsterMove,129)
+		
+	}
+	function choicedir(){
+		if(mdir=="l" && !arr[posY][posX-1] || arr[posY][posX-1]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir="r";
+			else if(temp==1)mdir="u";
+			else mdir="d";
+		}
+		else if(mdir == "r"&& !arr[posY][posX+1] || arr[posY][posX+1]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir="l";
+			else if(temp==1)mdir="u";
+			else mdir="d";
+		}
+		else if(mdir == "u"&& !arr[posY-1] || arr[posY-1][posX]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir="d";
+			else if(temp==1)mdir="l";
+			else mdir="r";
+		}
+		else if(mdir == "d" && !arr[posY+1] || arr[posY+1][posX]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir="u";
+			else if(temp==1)mdir="l";
+			else mdir="r";
+		}
+
+	}
+	function changedir(){
+		if((mdir=="l" && !arr[posY][posX-1] || arr[posY][posX-1]==0)||(mdir == "r"&& !arr[posY][posX+1] || arr[posY][posX+1]==0)||(mdir == "u"&& !arr[posY-1] || arr[posY-1][posX]==0)||(mdir == "d" && !arr[posY+1] || arr[posY+1][posX]==0)){
+			choicedir();
+		}
+
+	}
+	function monsterMove(){
+		if(mdir == "l"&&arr[posY][posX-1]&&arr[posY][posX-1]!=0){
+			removeClass(aDiv[posY*arr[0].length+posX],"monster");
+			posX--;
+		}
+		else if(mdir == "r"&&arr[posY][posX+1]&&arr[posY][posX+1]!=0){
+			removeClass(aDiv[posY*arr[0].length+posX],"monster");
+			posX++;
+		}
+		else if(mdir == "u"&&arr[posY-1]&&arr[posY-1][posX]!=0){
+			removeClass(aDiv[posY*arr[0].length+posX],"monster");
+			posY--;
+		}
+		else if(mdir == "d"&&arr[posY+1]&&arr[posY+1][posX]!=0){
+			removeClass(aDiv[posY*arr[0].length+posX],"monster");
+			posY++;
+		}
+		else{
+			removeClass(aDiv[posY*arr[0].length+posX],"monster");
+			//changedir();
+			choicedir()
+			
+		}
+		addClass(aDiv[posY*arr[0].length+posX],"monster");
+		if (hasClass(aDiv[posY*arr[0].length+posX],"p")){
+			clearInterval(timer);
+			clearInterval(mtimer);
+			clearInterval(mtimer2);
+			clearInterval(mtimer3);
+			alert("die")
+
+		}
+		
+	}
+	//monsterGo(0,0)
+	
+	//第二只怪物生成
+	var mdir2 = "d";
+	var posY2 = arr.length-1;
+	var posX2 = 0;
+	var mtimer2 = null;
+	function monsterGo2(posX2,posY2){
+		addClass(aDiv[posY2*arr[0].length+posX2],"monster2");
+		
+		mtimer2 = setInterval(monsterMove2,129)
+		
+	}
+	function choicedir2(){
+		if(mdir2=="l" && !arr[posY2][posX2-1] || arr[posY2][posX2-1]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir2="r";
+			else if(temp==1)mdir2="u";
+			else mdir2="d";
+		}
+		else if(mdir2 == "r"&& !arr[posY2][posX2+1] || arr[posY2][posX2+1]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir2="l";
+			else if(temp==1)mdir2="u";
+			else mdir2="d";
+		}
+		else if(mdir2 == "u"&& !arr[posY2-1] || arr[posY2-1][posX2]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir2="d";
+			else if(temp==1)mdir2="l";
+			else mdir2="r";
+		}
+		else if(mdir2 == "d" && !arr[posY2+1] || arr[posY2+1][posX2]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir2="u";
+			else if(temp==1)mdir2="l";
+			else mdir2="r";
+		}
+
+	}
+	function changedir2(){
+		if((mdir2=="l" && !arr[posY2][posX2-1] || arr[posY2][posX2-1]==0)||(mdir2 == "r"&& !arr[posY2][posX2+1] || arr[posY2][posX2+1]==0)||(mdir2 == "u"&& !arr[posY2-1] || arr[posY2-1][posX2]==0)||(mdir2 == "d" && !arr[posY2+1] || arr[posY2+1][posX2]==0)){
+			choicedir2();
+		}
+	}
+	function monsterMove2(){
+		if(mdir2 == "l"&&arr[posY2][posX2-1]&&arr[posY2][posX2-1]!=0){
+			removeClass(aDiv[posY2*arr[0].length+posX2],"monster2");
+			posX2--;
+		}
+		else if(mdir2 == "r"&&arr[posY2][posX2+1]&&arr[posY2][posX2+1]!=0){
+			removeClass(aDiv[posY2*arr[0].length+posX2],"monster2");
+			posX2++;
+		}
+		else if(mdir2 == "u"&&arr[posY2-1]&&arr[posY2-1][posX2]!=0){
+			removeClass(aDiv[posY2*arr[0].length+posX2],"monster2");
+			posY2--;
+		}
+		else if(mdir2 == "d"&&arr[posY2+1]&&arr[posY2+1][posX2]!=0){
+			removeClass(aDiv[posY2*arr[0].length+posX2],"monster2");
+			posY2++;
+		}
+		else{
+			removeClass(aDiv[posY2*arr[0].length+posX2],"monster2");
+			changedir2();
+			
+		}
+		addClass(aDiv[posY2*arr[0].length+posX2],"monster2");
+		if (hasClass(aDiv[posY2*arr[0].length+posX2],"p")){
+			clearInterval(timer);
+			clearInterval(mtimer);
+			clearInterval(mtimer2);
+			clearInterval(mtimer3);
+			alert("die")
+
+		}
+		
+	}
+	//monsterGo2(0,arr.length-1)
+
+	var mdir3 = "d";
+	var posY3 = 0;
+	var posX3 = arr[0].length-1;
+	var mtimer3 = null;
+	function monsterGo3(posX3,posY3){
+		addClass(aDiv[posY3*arr[0].length+posX3],"monster3");
+		
+		mtimer3 = setInterval(monsterMove3,129)
+		
+	}
+	function choicedir3(){
+		if(mdir3=="l" && !arr[posY3][posX3-1] || arr[posY3][posX3-1]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir3="r";
+			else if(temp==1)mdir3="u";
+			else mdir3="d";
+		}
+		else if(mdir3 == "r"&& !arr[posY3][posX3+1] || arr[posY3][posX3+1]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir3="l";
+			else if(temp==1)mdir3="u";
+			else mdir3="d";
+		}
+		else if(mdir3 == "u"&& !arr[posY3-1] || arr[posY3-1][posX3]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir3="d";
+			else if(temp==1)mdir3="l";
+			else mdir3="r";
+		}
+		else if(mdir3 == "d" && !arr[posY3+1] || arr[posY3+1][posX3]==0){
+			var temp = Math.round(Math.random()*2);
+			if(temp==0)mdir3="u";
+			else if(temp==1)mdir3="l";
+			else mdir3="r";
+		}
+
+	}
+	function changedir3(){
+		if((mdir3=="l" && !arr[posY3][posX3-1] || arr[posY3][posX3-1]==0)||(mdir3 == "r"&& !arr[posY3][posX3+1] || arr[posY3][posX3+1]==0)||(mdir3 == "u"&& !arr[posY3-1] || arr[posY3-1][posX3]==0)||(mdir3 == "d" && !arr[posY3+1] || arr[posY3+1][posX3]==0)){
+			choicedir3();
+		}
+	}
+	function monsterMove3(){
+		if(mdir3 == "l"&&arr[posY3][posX3-1]&&arr[posY3][posX3-1]!=0){
+			removeClass(aDiv[posY3*arr[0].length+posX3],"monster3");
+			posX3--;
+		}
+		else if(mdir3 == "r"&&arr[posY3][posX3+1]&&arr[posY3][posX3+1]!=0){
+			removeClass(aDiv[posY3*arr[0].length+posX3],"monster3");
+			posX3++;
+		}
+		else if(mdir3 == "u"&&arr[posY3-1]&&arr[posY3-1][posX3]!=0){
+			removeClass(aDiv[posY3*arr[0].length+posX3],"monster3");
+			posY3--;
+		}
+		else if(mdir3 == "d"&&arr[posY3+1]&&arr[posY3+1][posX3]!=0){
+			removeClass(aDiv[posY3*arr[0].length+posX3],"monster3");
+			posY3++;
+		}
+		else{
+			removeClass(aDiv[posY3*arr[0].length+posX3],"monster3");
+			changedir3();
+			
+		}
+		addClass(aDiv[posY3*arr[0].length+posX3],"monster3");
+		if (hasClass(aDiv[posY3*arr[0].length+posX3],"p")){
+			clearInterval(timer);
+			clearInterval(mtimer);
+			clearInterval(mtimer2);
+			clearInterval(mtimer3);
+			alert("die")
+
+		}
+		
+	}
+	//monsterGo3(arr[0].length-1,0)
+	var obtn = document.getElementById("btn");
+	obtn.onclick = function(){
+		var timer = setInterval(function(){
+		
+			go();
+			//ocssLink.href = arradr[n%2]
+		},150)
+		monsterGo(posX,posY);
+		monsterGo2(posX2,posY2);
+		monsterGo3(posX3,posY3);
+	}
+	
+
+
+</script>

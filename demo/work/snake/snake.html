@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ch">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="style/stylesheet.css">
+	<style>
+	
+	</style>
+</head>
+<body>
+	
+	<div class="main">
+		
+	</div>
+	<div class="control">
+		<input type="button" value="START"><span class="word">分数：</span><span>0</span>
+	</div>
+	<!-- <input type="button" value="→">
+	<input type="button" value="↓">
+	<input type="button" value="←">
+	<input type="button" value="↑"> -->
+</body>
+</html>
+<script>
+	
+	var main = document.getElementsByTagName("div")[0];
+	function start(){
+		for(var i=0;i<40;i++){
+			for(var j=0;j<40;j++){
+				var oDiv = document.createElement("div");
+				oDiv.x = j;
+				oDiv.y = i;
+				oDiv.pos = j+i*40;
+				main.appendChild(oDiv);
+			}
+		}
+
+	}
+
+	start();
+	function zero(){
+		arr=[];
+		for(var i =0;i<aDiv.length;i++){
+			aDiv[i].className = "";
+		}
+		aDiv[iNum].className = "snake";
+		aDiv[iNum-1].className = "snake";
+		oSpan.innerHTML = "0";
+		ms = 200;
+		arr.push(iNum);
+		arr.push(iNum-1);
+		dirc = 0;
+	}
+	
+	var aDiv = main.getElementsByTagName("div");
+	var arr=[];
+	var iNum = 50;
+	var timer =null;
+	var count = 0;
+	var dirc = 0;
+	var oSpan = document.getElementsByTagName("span")[1];
+	var ms = 200;
+	zero();
+	function create(){
+		var apple = Math.floor(Math.random()*1600);
+		function isNot(){
+			for(var i =0;i<arr.length;i++){
+				if (arr[i] == apple){
+					return false;
+				}
+			}
+			return true;
+		}
+		if(!isNot()){
+			create()
+		}else{
+			aDiv[apple].className = "apple";
+		}
+	}
+	
+	function go(){
+		if(dirc == 0){
+			if(arr[0]%40==39){
+				clearInterval(timer);
+				timer = null;
+				alert("撞墙了")
+			}
+			else{
+				if(aDiv[arr[0]+1].className=="apple"){
+					eat(1);
+				}
+				else if(aDiv[arr[0]+1].className=="snake"){
+					die()
+				}
+				else{
+					move(1);
+				}
+			}
+			
+		}
+
+		if(dirc ==1){
+			if(arr[0]>1559){
+				clearInterval(timer);
+				timer = null;
+				alert("撞墙了")
+			}
+			else{
+				if(aDiv[arr[0]+40].className=="apple"){
+					eat(40);
+				}
+				else if(aDiv[arr[0]+40].className=="snake"){
+					die()
+				}
+				else{
+					move(40);
+				}
+			}
+		}
+
+		if(dirc ==2){
+			if(arr[0]%40==0){
+				clearInterval(timer);
+				timer = null;
+				alert("撞墙了")
+			}
+			else{
+				if(aDiv[arr[0]-1].className=="apple"){
+					eat(-1);
+				}
+				else if(aDiv[arr[0]-1].className=="snake"){
+					die();
+				}
+				else{
+					move(-1);
+				}
+			}
+			
+		}
+
+		if(dirc ==3){
+			if(arr[0]<40){
+				clearInterval(timer);
+				timer = null;
+				alert("撞墙了")
+			}
+			else{
+				if(aDiv[arr[0]-40].className=="apple"){
+					eat(-40);
+				}
+				else if(aDiv[arr[0]-40].className=="apple"){
+					die();
+				}
+				else{
+					move(-40);
+				}
+			}
+			
+		}
+
+	}
+	function move(num){
+		arr.unshift(arr[0]+num);
+		aDiv[arr[0]].className = "snake";
+		aDiv[arr.pop()].className ="";
+	}
+
+	function eat(num){
+		arr.unshift(arr[0]+num);
+		aDiv[arr[0]].className = "snake";
+		create();
+		count++;
+		ms = ms - 2;
+		oSpan.innerHTML = count;
+		clearInterval(timer);
+
+		interval();
+	}
+	
+	var aInput = document.getElementsByTagName("input");
+	aInput[0].onclick = function(){
+		if(!timer){
+			zero();
+			create();
+			interval();
+		}
+		
+	}
+	function interval(){
+		timer = setInterval(function(){go()},ms);
+	}
+	document.onkeydown = function(ev){
+		ev =ev||event;
+		if(ev.keyCode==39&&dirc!=2&&dirc!=0){
+			dirc =0;
+			//move(1);
+		}
+		if(ev.keyCode==40&&dirc!=3&&dirc!=1){
+			dirc =1;
+			//move(40);
+		}
+		if(ev.keyCode==37&&dirc!=0&&dirc!=2){
+			dirc =2;
+			//move(-1);
+		}
+		if(ev.keyCode==38&&dirc!=1&&dirc!=3){
+			dirc =3;
+			//move(-40);
+		}
+	}
+	function die(){
+		clearInterval(timer);
+		timer = null;
+		alert("咬死自己了");
+
+
+	}
+	
+</script>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	div.box{width:255px;height:439px;background: url(phone.jpg) 0 0 no-repeat;}
+	div#phone{position: relative;top:73px;left:45px;display:inline-block;width:167px;height:294px;overflow: hidden;}
+	
+	div.list{width:20px;height:20px;position: absolute;bottom:10px;right:10px;border-radius: 300%;cursor: pointer;color:#fff;opacity: 0;}
+	#list6{background:url(icon1.png) 0 0 no-repeat;}
+	#list5{background:url(icon2.png) 0 0 no-repeat;}
+	#list4{background:url(icon3.png) 0 0 no-repeat;}
+	#list3{background:url(icon4.png) 0 0 no-repeat;}
+	#list2{background:url(icon5.png) 0 0 no-repeat;}
+	#list1{background:url(icon6.png) 0 0 no-repeat;}
+	#last{background:url(icon0.png) 0 0 no-repeat;}
+	div#last{-webkit-transform: rotate(0deg);transition:1s;opacity: 1;}
+	div#phone p{position: relative;height:10px;line-height: 28px;width:28px;margin:0;padding:0;left:0px;top:0;font-size: 12px;color:#fff;opacity: 0}
+	</style>
+</head>
+<body>
+<div class="box">
+	<div id="phone">
+		<div class="list" id="list6"><p class="word">twitter</p></div>
+		<div class="list" id="list5"><p class="word">facebook</p></div>
+		<div class="list" id="list4"><p class="word">network</p></div>
+		<div class="list" id="list3"><p class="word">game</p></div>
+		<div class="list" id="list2"><p class="word">weather</p></div>
+		<div class="list" id="list1"><p class="word">meassage</p></div>
+		<div class="list" id="last"></div>
+	</div>
+</div>
+	<script src="move.js"></script>
+	<script>
+	/*
+		角度和弧度关系是：
+			2π弧度=360°。从而1°≈0.0174533弧度，1弧度≈57.29578°。
+			1) 角度转换为弧度公式：弧度=角度×(π÷180)
+			2) 弧度转换为角度公式：角度=弧度×(180÷π)
+		周长 = 2πr(r半径)
+
+	
+	*/
+	// 30° 等于 0.5 弧
+	// firefox 有小数精度误差、chrome没有	
+	
+	var x = 1;
+	var y = 3;
+	var r = 150;	// 半径
+	
+	var a , b;
+	
+	
+	
+	function getXY(num,val){
+
+		a = Math.cos( num*Math.PI/180 ) * x * r;
+		b = Math.sin( num*Math.PI/180 ) * y * r;
+		c = Math.cos(Math.asin((num-10)*4/(y*r))) * x * r;
+		a = 160-a;
+		c = 160-c;
+		return [a,b,c];
+	}
+	//console.log(getXY(20),getXY(30),getXY(40),getXY(50),getXY(60));
+	var set = {"right":10,"bottom":10};
+	var arr = [
+	{"right":getXY(60)[0],"bottom":150+10},
+	{"right":getXY(50)[0],"bottom":125+10},
+	{"right":getXY(40)[0],"bottom":100+10},
+	{"right":getXY(30)[0],"bottom":75+10},
+	{"right":getXY(20)[0],"bottom":50+10},
+	{"right":getXY(10)[0],"bottom":25+10,opacity:100},
+	
+	];
+	//不是圆弧轨迹
+	//圆弧轨迹应该是sin(acos(b))
+	var oPhone = document.getElementById("phone");
+	var aP= document.getElementsByTagName("p");
+	var aList = oPhone.getElementsByTagName("div");
+	var lastLi = document.getElementById("last")
+	onOff = 1;
+	function goOut(){
+		doMove(aList[0],arr[5],100,"easeIn",function(){doMove(aList[0],arr[4],100,"easeIn",function(){doMove(aList[0],arr[0],300,"backOut",function(){doMove(aP[0],{"left":-50,"opacity":100},300,"linear")})})})
+	
+		doMove(aList[1],arr[5],100,"easeIn",function(){doMove(aList[1],arr[4],100,"easeIn",function(){doMove(aList[1],arr[1],300,"backOut",function(){doMove(aP[1],{"left":-50,"opacity":100},300,"linear")})})})
+	
+		doMove(aList[2],arr[5],100,"easeIn",function(){doMove(aList[2],arr[4],100,"easeIn",function(){doMove(aList[2],arr[2],300,"backOut",function(){doMove(aP[2],{"left":-50,"opacity":100},300,"linear")})})})
+	
+		doMove(aList[3],arr[5],100,"easeIn",function(){doMove(aList[3],arr[4],100,"easeIn",function(){doMove(aList[3],arr[3],300,"backOut",function(){doMove(aP[3],{"left":-50,"opacity":100},300,"linear")})})})
+	
+		doMove(aList[4],arr[5],100,"easeIn",function(){doMove(aList[4],arr[4],100,"easeIn",function(){doMove(aList[4],arr[4],300,"backOut",function(){doMove(aP[4],{"left":-50,"opacity":100},300,"linear")})})})
+	
+		doMove(aList[5],arr[5],100,"easeIn",function(){doMove(aList[5],arr[5],100,"easeIn",function(){doMove(aList[5],arr[5],300,"backOut",function(){doMove(aP[5],{"left":-50,"opacity":100},300,"linear")})})})
+	}
+	function goIn(){
+		for(var i = 0;i<aP.length;i++){
+			aP[i].style.opacity = 0;
+			aP[i].style.left = 0;
+		}
+		doMove(aList[0],set,500,"easeOut",function(){aList[0].style.opacity = 0});
+		doMove(aList[1],set,500,"easeOut",function(){aList[1].style.opacity = 0});
+		doMove(aList[2],set,500,"easeOut",function(){aList[2].style.opacity = 0});
+		doMove(aList[3],set,500,"easeOut",function(){aList[3].style.opacity = 0});
+		doMove(aList[4],set,500,"easeOut",function(){aList[4].style.opacity = 0});
+		doMove(aList[5],set,500,"easeOut",function(){aList[5].style.opacity = 0});
+	}
+	lastLi.onclick = function(){
+		if(onOff==1){
+			onOff = 3;
+			goOut();
+			this.style.webkitTransform = "rotate(-360deg)";
+			var timer = setTimeout(function(){
+				onOff = 2;
+			},1000)
+		}
+		else if(onOff==2){
+			onOff = 3
+			goIn();
+			this.style.webkitTransform = "rotate(0deg)";
+			var timer = setTimeout(function(){
+				onOff = 1;
+			},1000)
+		}
+	}
+	</script>
+</body>
+</html>

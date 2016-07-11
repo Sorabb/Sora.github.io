@@ -1,0 +1,9 @@
+	#box{width:1120px;height: 300px;background:#000 url(2.jpg);}
+	.yes{width:20px;height:20px;float:left;background:url(pea.gif) center no-repeat;}
+	.no{width:20px;height:20px;float:left;}
+	.p{width:20px;height:20px;float:left;background: url(p.gif) center no-repeat;}
+	.p2{width:20px;height:20px;float:left;background: url(p2.gif) center no-repeat;}
+	.monster{width:20px;height:20px;float:left;background:url(mon.gif) center no-repeat;}
+	.monster2{width:20px;height:20px;float:left;background:url(m2.gif) center no-repeat;}
+	.monster3{width:20px;height:20px;float:left;background:url(m3.gif) center no-repeat;}
+	#btn{width:100px;height:50px;margin-top: 30px;}

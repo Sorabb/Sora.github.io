@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	html{height:100%;width:100%;overflow: hidden;}
+	body{margin:0;padding:0;height:100%;width:100%;overflow: hidden;position: relative;}
+	#bg{height:100%;width:100%;position: absolute;top:0;left:0;}
+	#bg img{width:100%;}
+	#move{position: absolute;top:0;left:0;}
+	#border{position: absolute;top:0;left:0;}
+	#border img{float:left;}
+	#img{position: absolute;top:0;left:0;}
+	#img img{float:left;}
+	</style>
+</head>
+<body>
+	<div id="bg">
+		<img src="bg.jpeg" alt="">
+	</div>
+	<div id="move">
+		<div id="border"><img src="1.png" alt=""></div>
+		<div id="img"><img src="2.png" alt=""></div>
+	</div>
+	<script>
+	window.onload = function(){
+
+		//各种初始化
+		var oBox = document.getElementById("move");
+		var oBorder = document.getElementById("border");
+		var oImg = document.getElementById("img");
+		var middlePointX = 0;
+		var middlePointY = 0;
+		var oBorderV = 0;
+		var oImgV = 0;
+		function getStyle(){
+			middlePointX = document.documentElement.clientWidth/2;
+			middlePointY = document.documentElement.clientHeight/2;
+
+			oBox.width = oBorder.offsetWidth > oImg.clientWidth ? oBorder.clientWidth : oImg.clientWidth ;
+		
+			oBox.height = oBorder.clientHeight > oImg.clientHeight ? oBorder.clientHeight : oImg.clientHeight ;	
+
+			oBox.style.width = oBox.width + "px";
+
+			oBox.style.height = oBox.height + "px";
+
+			oBox.style.left = middlePointX - oBox.width/2 + "px";
+
+			oBox.style.top = middlePointY - oBox.height/2 + "px";
+
+			oBorder.style.left = oBox.width/2 - oBorder.clientWidth/2 + "px";
+
+			oBorder.style.top = oBox.height/2 - oBorder.clientHeight/2 + "px";
+
+			oImg.style.left = oBox.width/2 - oImg.clientWidth/2 + "px";
+
+			oImg.style.top = oBox.height/2 - oImg.clientHeight/2 + "px";
+		}
+
+		getStyle();
+		window.onresize = getStyle;
+		document.onmousemove = function(ev){
+			var ev = ev || event;
+			var disX = ev.clientX;
+			var disY = ev.clientY;
+			oBorderV = 20;//文字速率比例
+			oImgV = 50;//图片速率比例
+
+			//(X坐标-中点)/V + 本身的left值
+			oBorder.style.left = (disX - middlePointX)/oBorderV + oBox.width/2 - oBorder.clientWidth/2 + "px";
+
+			oBorder.style.top = (disY - middlePointY)/oBorderV + oBox.height/2 - oBorder.clientHeight/2 + "px";
+
+			oImg.style.left = (disX - middlePointX)/oImgV + oBox.width/2 - oImg.clientWidth/2 + "px";
+
+			oImg.style.top = (disY - middlePointY)/oImgV + oBox.height/2 - oImg.clientHeight/2 + "px";
+		}
+
+	}
+
+	</script>
+</body>
+</html>
