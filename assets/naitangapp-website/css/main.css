@@ -192,6 +192,16 @@ body {
     height: 18vw;
     width: 65vw
 }
+.copyright {
+    color: #fff;
+}
+.copyright a ,.copyright span {
+    padding: 0 20px;
+    white-space: nowrap;
+}
+.copyright a {
+    color: #fff;
+}
 
 @media (max-width: 414px) {
     header {
